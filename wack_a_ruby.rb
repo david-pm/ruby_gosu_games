@@ -9,7 +9,7 @@ class WackARuby < Gosu::Window
     @image  = Gosu::Image.new("ruby.png")
 
     @x_offset, @y_offset, @width, @height  = 150, 150, 150, 150
-    @velocity_x, @velocity_y = 5, 5
+    @velocity_x, @velocity_y = 4, 4
   end
 
   def draw
@@ -19,8 +19,8 @@ class WackARuby < Gosu::Window
   def update
     @x_offset += @velocity_x
     @y_offset += @velocity_y
-    @velocity_x *= -1 if @x_offset + (@width / 2) > 800  || @x_offset - (@width / 2) < 0
-    @velocity_y *= -1 if @y_offset + (@height / 2) > 600 || @y_offset - (@height / 2) < 0
+    @velocity_x *= -1 if @x_offset + (@width / 4) > 800  || @x_offset - (@width / 4) < 0
+    @velocity_y *= -1 if @y_offset + (@height / 4) > 600 || @y_offset - (@height / 4) < 0
   end
 end
 
