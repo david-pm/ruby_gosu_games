@@ -6,14 +6,16 @@ class WackARuby < Gosu::Window
     super(width, height)
     self.caption = "Wack A Ruby!"
 
-    @image  = Gosu::Image.new("ruby.png")
+    @ruby  = Gosu::Image.new("ruby.png")
+    @dude  = Gosu::Image.new("dude.png")
 
     @x_offset, @y_offset, @width, @height  = 150, 150, 150, 150
     @velocity_x, @velocity_y = 4, 4
   end
 
   def draw
-    @image.draw(@x_offset - @width / 2, @y_offset - @height / 2, 1)
+    @ruby.draw(@x_offset - @width / 2, @y_offset - @height / 2, 1)
+    @dude.draw(150, 150, 1)
   end
 
   def update
