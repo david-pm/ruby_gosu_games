@@ -4,7 +4,7 @@ class WackARuby < Gosu::Window
 
   def initialize(width, height)
     super(width, height)
-    self.caption = "Wack A Ruby!"
+    self.caption = "Catch 'em all!"
 
     @ruby  = Gosu::Image.new("ruby.png")
     @dude  = Gosu::Image.new("dude.png")
