@@ -1,28 +1,29 @@
 require "gosu"
 
 class WackARuby < Gosu::Window
-
   def initialize(width, height)
     super(width, height)
     self.caption = "Catch 'em all!"
 
-    @ruby  = Gosu::Image.new("ruby.png")
-    @dude  = Gosu::Image.new("dude.png")
-    @font  = Gosu::Font.new(60)
+    @ruby     = Gosu::Image.new("ruby.png")
+    @emerald  = Gosu::Image.new("emerald.png")
+    @dude     = Gosu::Image.new("dude.png")
+    @font     = Gosu::Font.new(60)
 
-    @x_offset = @y_offset = @width = @height = 150
-    @velocity_x = @velocity_y                = 4
-    @visible = @hit = @score                 = 0
-    @playing = true
+    init_ruby
+    init_emerald
+
+    @visible = @hit = @score  = 0
+    @width = @height = 150
+    @playing    = true
     @start_time = 0
   end
 
   # draw and update run in a loop
 
   def draw
-    if @visible > 0
-      @ruby.draw(@x_offset - @width / 2, @y_offset - @height / 2, 1)
-    end
+    draw_ruby
+    draw_emerald
     @dude.draw(mouse_x - 75, mouse_y - 75, 1)
 
     hitter
@@ -33,18 +34,53 @@ class WackARuby < Gosu::Window
 
   def update
     if @playing
-      @x_offset += @velocity_x
-      @y_offset += @velocity_y
-
-      @time_left = (10 - ((Gosu.milliseconds - @start_time) / 1000))
+      update_velocity
+      @time_left = (15 - ((Gosu.milliseconds - @start_time) / 1000))
       @playing = false if @time_left < 0
 
-      @velocity_x *= -1 if @x_offset + (@width / 4) > 800  ||
-                           @x_offset - (@width / 4) < 0
-      @velocity_y *= -1 if @y_offset + (@height / 4) > 600 ||
-                           @y_offset - (@height / 4) < 0
       @visible -= 1
-      @visible = 30 if @visible < -10 && rand < 0.1
+      @visible = 30 if @visible < -10 && rand < 0.05
+    end
+  end
+
+  protected
+
+  def init_ruby
+    @velocity_x = @velocity_y = 5
+    @x_off = @y_off = 150
+  end
+
+  def init_emerald
+    @emer_speed_x = @emer_speed_y = 4
+    @x_emer_off = @y_emer_off = 450
+  end
+
+  def update_velocity(x: nil, y: nil, dimension: nil)
+    @x_emer_off += @emer_speed_x
+    @y_emer_off += @emer_speed_y
+
+    @x_off += @velocity_x
+    @y_off += @velocity_y
+    @emer_speed_x *= -1 if @x_emer_off + (@width / 4) > 800  ||
+                         @x_emer_off - (@width / 4) < 0
+    @emer_speed_y *= -1 if @y_emer_off + (@height / 4) > 600 ||
+                         @y_emer_off - (@height / 4) < 0
+
+    @velocity_x *= -1 if @x_off + (@width / 4) > 800  ||
+                         @x_off - (@width / 4) < 0
+    @velocity_y *= -1 if @y_off + (@height / 4) > 600 ||
+                         @y_off - (@height / 4) < 0
+  end
+
+  def draw_emerald
+    if @visible > -15
+      @emerald.draw(@x_emer_off - @width / 2, @y_emer_off - @height / 2, 1)
+    end
+  end
+
+  def draw_ruby
+    if @visible > 0
+      @ruby.draw(@x_off - @width / 2, @y_off - @height / 2, 1)
     end
   end
 
@@ -81,7 +117,7 @@ class WackARuby < Gosu::Window
   end
 
   def game_over
-    c = Gosu::Color::BLUE
+    c = Gosu::Color::YELLOW
     draw_quad(0, 0, c, 800, 0, c, 800, 600, c, 0, 600, c)
 
     @font.draw('Game 0ver', 300, 300, 3)
@@ -97,7 +133,7 @@ class WackARuby < Gosu::Window
   end
 
   def check_distance_and_visibility
-    (Gosu.distance(mouse_x, mouse_y, @x_offset, @y_offset) < 50 && 
+    (Gosu.distance(mouse_x, mouse_y, @x_off, @y_off) < 50 && 
      @visible >= 0)
   end
 end
