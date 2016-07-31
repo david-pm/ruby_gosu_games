@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require "gosu"
 
 class WackARuby < Gosu::Window
@@ -5,9 +7,9 @@ class WackARuby < Gosu::Window
     super(width, height)
     self.caption = "Catch 'em all!"
 
-    @ruby     = Gosu::Image.new("ruby.png")
-    @emerald  = Gosu::Image.new("emerald.png")
-    @dude     = Gosu::Image.new("dude.png")
+    @ruby     = Gosu::Image.new("img/ruby.png")
+    @emerald  = Gosu::Image.new("img/emerald.png")
+    @dude     = Gosu::Image.new("img/dude.png")
     @font     = Gosu::Font.new(60)
 
     init_ruby
@@ -35,7 +37,7 @@ class WackARuby < Gosu::Window
   def update
     if @playing
       update_velocity
-      @time_left = (15 - ((Gosu.milliseconds - @start_time) / 1000))
+      @time_left = (25 - ((Gosu.milliseconds - @start_time) / 1000))
       @playing = false if @time_left < 0
 
       @visible -= 1
@@ -136,7 +138,7 @@ class WackARuby < Gosu::Window
     (Gosu.distance(mouse_x, mouse_y, @x_off, @y_off) < 50 && 
      @visible >= 0)
   end
-end
+end # end class
 
 
 window = WackARuby.new(800, 600)
