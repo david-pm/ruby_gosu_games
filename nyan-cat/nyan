@@ -20,7 +20,7 @@ class Window < Gosu::Window
     @sweet = Sweet.new(self)
     @cat = NyanCat.new(self)
     @score = 0
-    @score_text = Gosu::Font.new(72)
+    @score_text = Gosu::Font.new(70)
   end
 
   def draw
@@ -41,7 +41,7 @@ class Window < Gosu::Window
       @score += 1
       @sweet.reset(self)
     end
-    @background.scroll
+    # @background.scroll
   end
 
 end
@@ -54,7 +54,8 @@ class NyanCat
     # and declaring it non-tileable
     @sprites = Gosu::Image::load_tiles(window,
                                        "images/cat.png",
-                                       847/6, 87, false)
+                                       (847.to_f/6).ceil, 87, false)
+                                       # 847/6
 
     # set initial coordinates, extract widht and height
     @x = 10
@@ -136,9 +137,9 @@ end
 
 class Background
   def initialize(window)
-    @first_image = Gosu::Image.new(window, "images/background.jpg")
+    @first_image = Gosu::Image.new(window, "images/bkg.jpg")
     @width = @first_image.width
-    @second_image = Gosu::Image.new(window, "images/background.jpg")
+    @second_image = Gosu::Image.new(window, "images/bkg.jpg")
 
     @first_x = 0
     @second_x = @first_x + @width
@@ -163,4 +164,4 @@ class Background
   end
 end
 
-Window.new(width: 900, height: 550, full: false).show
+Window.new(width: 895, height: 550, full: false).show
