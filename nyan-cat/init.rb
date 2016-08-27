@@ -20,36 +20,58 @@ class Window < Gosu::Window
   def initialize(width:, height:, full: false)
     super(width, height, full)
     self.caption = "Nyan Cat!"
-    Gosu::Song.new(self, "sounds/nyan.wav").play
 
+    @song = Gosu::Song.new(self, "sounds/nyan.wav")
     @background = Background.new(self)
     @sweet = Sweet.new(self)
     @cat = NyanCat.new(self)
     @score = 0
-    @score_text = Gosu::Font.new(70)
+    @font = Gosu::Font.new(64)
+    @playing = false
+    @start_time = 0
   end
 
   def draw
     @background.draw
     @cat.draw
     @sweet.draw
-    @score_text.draw("#{@score}", 0, 0, 1)
+    @font.draw("points: #{@score}", 0, 0, 1)
+    @font.draw("time: #{@time_left}", 680, 0, 1)
+    @font.draw("Hit SPACEBAR to Play", 175, 300, 1) unless @playing
   end
 
   def update
     @cat.move_up   if button_down? Gosu::KbUp
     @cat.move_down if button_down? Gosu::KbDown
-    @sweet.move
+    @background.scroll
 
-    # reset if cat gets it or if it leaves screen
-    @sweet.reset(self) if @sweet.x < 0
-    if @cat.bumped_into? @sweet
-      @score += 1
-      @sweet.reset(self)
+    if @playing
+      @time_left = (20 - ((Gosu.milliseconds - @start_time) / 1000))
+      if @time_left < 0
+        @sweet.x = 0
+        @playing = false
+        @song.stop
+      end
+
+      @sweet.move
+      # reset if cat gets it or if it leaves screen
+      @sweet.reset(self) if @sweet.x < 0
+      if @cat.bumped_into? @sweet
+        @score += 1
+        @sweet.reset(self)
+      end
     end
-    # @background.scroll
   end
 
+  def button_down(id)
+    # start or reset
+    if (id == Gosu::KbSpace)
+      @score = 0
+      @song.play
+      @start_time = Gosu.milliseconds
+      @playing = true
+    end
+  end
 end
 
 Window.new(width: 895, height: 550, full: false).show
