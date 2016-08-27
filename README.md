@@ -1,3 +1,6 @@
 # ruby_gosu_games
 
-a collection of games made with the Gosu library
+a collection of games made with the Gosu library:
+
+- nyan cat
+- ruby catcher
