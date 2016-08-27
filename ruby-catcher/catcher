@@ -23,6 +23,7 @@ class WackARuby < Gosu::Window
     @playing    = false
   end
 
+  ###############################
   # draw and update run in a loop
 
   def draw
@@ -45,7 +46,9 @@ class WackARuby < Gosu::Window
     end
   end
 
-  protected
+  ###############################
+
+  private
 
   def intro
     @font.draw("Click the RUBY When Visible!", 50, 300, 3)
@@ -84,27 +87,31 @@ class WackARuby < Gosu::Window
 
   def draw_emerald
     if @visible > -15
-      @emerald.draw(@x_emer_off - @width / 2, @y_emer_off - @height / 2, 1)
+      @emerald.draw(@x_emer_off - @width / 2,
+                    @y_emer_off - @height / 2, 1)
     end
   end
 
   def draw_ruby
     if @visible > 0
-      @ruby.draw(@x_off - @width / 2, @y_off - @height / 2, 1)
+      @ruby.draw(@x_off - @width / 2,
+                 @y_off - @height / 2, 1)
     end
   end
 
   def hitter
     if @hit == 0
-      c = Gosu::Color::GRAY
+      color = Gosu::Color::GRAY
     elsif @hit == 1
-      c = Gosu::Color::RED
+      color = Gosu::Color::RED
     elsif @hit == -1
-      c = Gosu::Color::WHITE
+      color = Gosu::Color::WHITE
     end
-
     # left_offset, top_offset and a color * 4
-    draw_quad(0, 0, c, 800, 0, c, 800, 600, c, 0, 600, c)
+    draw_quad(0, 0, color,
+              800, 0, color,
+              800, 600, color,
+              0, 600, color)
     @hit = 0
   end
 
@@ -131,8 +138,11 @@ class WackARuby < Gosu::Window
   end
 
   def game_over
-    c = Gosu::Color::YELLOW
-    draw_quad(0, 0, c, 800, 0, c, 800, 600, c, 0, 600, c)
+    yellow = Gosu::Color::YELLOW
+    draw_quad(0, 0, yellow,
+             800, 0, yellow,
+             800, 600, yellow,
+             0, 600, yellow)
     @font.draw('Game 0ver', 300, 300, 3)
     @font.draw('Press Space Bar to Play Again', 50, 350, 3)
     @visible = 20
