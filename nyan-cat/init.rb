@@ -14,7 +14,7 @@ require "background"
 
 # the Window class calls two methods on itself:
 # draw and update - which create a loop
-# subclass those methods to add the logic for your game
+# use those methods to add the logic for your game
 
 class Window < Gosu::Window
   def initialize(width:, height:, full: false)
